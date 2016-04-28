@@ -16,7 +16,7 @@ class Customer extends User {
     protected $name;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(type="datetime")
      * @var \DateTime
      */
     protected $dateOfBirth;

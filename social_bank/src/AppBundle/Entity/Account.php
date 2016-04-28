@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 class Account {
@@ -37,6 +38,18 @@ class Account {
      * @ORM\ManyToOne(targetEntity="Customer", inversedBy="accounts")
      */
     protected $customer;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="source")
+     */
+    protected $expense;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="destination")
+     */
+    protected $income;
 
     /**
      * @return int
