@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,10 +28,16 @@ class Customer extends User {
     protected $jobDescription;
 
     /**
-     * @Column(type="enummaritalstatus")
+     * @ORM\Column(type="enummaritalstatus")
      * @var string
      */
     protected $status;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Account", mappedBy="customer")
+     * @var ArrayCollection
+     */
+    protected $acoounts;
 
     /**
      * @return string
