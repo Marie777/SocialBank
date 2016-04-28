@@ -17,6 +17,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Transaction
 {
     /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer
+     */
+    protected $id;
+    
+    /**
      * @ORM\Column
      * @var string
      */
