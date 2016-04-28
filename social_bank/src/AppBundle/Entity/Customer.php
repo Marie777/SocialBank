@@ -28,7 +28,7 @@ class Customer extends User {
     protected $jobDescription;
 
     /**
-     * @ORM\Column(type="enummaritalstatus")
+     * @ORM\Column(type="enum_marital_status")
      * @var string
      */
     protected $status;

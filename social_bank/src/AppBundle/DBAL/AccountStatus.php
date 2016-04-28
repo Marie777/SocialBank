@@ -6,7 +6,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
 class AccountStatus extends Type {
-    const ENUM_ACCOUNT_STATUS = "enumaccountstatus";
+    const ENUM_ACCOUNT_STATUS = "enum_account_status";
     const ENABLED = "enabled";
     const DISABLED = "disabled";
     const PENDING = "pending";
@@ -21,7 +21,7 @@ class AccountStatus extends Type {
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "ENUM('enabled', 'disabled', 'pending') COMMENT '(DC2Type:enumaccountstatus)'";
+        return "ENUM('enabled', 'disabled', 'pending') COMMENT '(DC2Type:enum_account_status)'";
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)

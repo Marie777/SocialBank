@@ -6,7 +6,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
 class MaritalStatus extends Type {
-    const ENUM_MARITAL_STATUS = "enummaritalstatus";
+    const ENUM_MARITAL_STATUS = "enum_marital_status";
     const MARRIED = "married";
     const SINGLE = "single";
     const DIVORCED = "divorced";
@@ -21,7 +21,7 @@ class MaritalStatus extends Type {
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "ENUM('married', 'single', 'divorced') COMMENT '(DC2Type:enummaritalstatus)'";
+        return "ENUM('married', 'single', 'divorced') COMMENT '(DC2Type:enum_marital_status)'";
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)

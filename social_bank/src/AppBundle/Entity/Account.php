@@ -22,7 +22,7 @@ class Account {
     protected $balance = 0;
 
     /**
-     * @ORM\Column(type="enumaccountstatus")
+     * @ORM\Column(type="enum_account_status")
      * @var string
      */
     protected $status;
