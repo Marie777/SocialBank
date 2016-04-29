@@ -1,0 +1,22 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <ul class="list-unstyled">
+                    {% for account in accounts %}
+                        <li><a href="{{ path('account-display', {'id': account.id}) }}">{{ account.id }}</a></li>
+                    {% else %}
+                        <li>You don't have any accounts yet.</li>
+                    {% endfor %}
+                    <a class="btn btn-default"
+                       href="{{ path('create-account') }}"
+                       role="button">Create account</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

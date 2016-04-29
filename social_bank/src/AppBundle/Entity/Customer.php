@@ -40,6 +40,16 @@ class Customer extends User {
     protected $accounts;
 
     /**
+     * Customer constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->accounts = new ArrayCollection();
+    }
+
+
+    /**
      * @return string
      */
     public function getName()
@@ -101,6 +111,14 @@ class Customer extends User {
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAccounts()
+    {
+        return $this->accounts;
     }
 
 }
