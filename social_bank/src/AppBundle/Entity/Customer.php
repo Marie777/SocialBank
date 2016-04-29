@@ -37,7 +37,7 @@ class Customer extends User {
      * @ORM\OneToMany(targetEntity="Account", mappedBy="customer")
      * @var ArrayCollection
      */
-    protected $acoounts;
+    protected $accounts;
 
     /**
      * @return string
