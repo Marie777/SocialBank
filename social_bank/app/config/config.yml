@@ -12,6 +12,20 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: AppBundle\Entity\User
+    service:
+      user_manager: pugx_user_manager
+
+pugx_multi_user:
+  users:
+    customer:
+        entity:
+          class: AppBundle\Entity\Customer
+        registration:
+          form:
+            type: AppBundle\Form\Type\RegistrationCustomerFormType
+            name: customer_registration_form
+            validation_groups:  [Registration, Default]
+          template: AppBundle:Customer:registration.html.twig
 
 framework:
     #esi:             ~
@@ -58,6 +72,8 @@ doctrine:
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
+        mapping_types:
+          enum: string
         types:
           enum_marital_status: AppBundle\DBAL\MaritalStatus
           enum_account_status: AppBundle\DBAL\AccountStatus
