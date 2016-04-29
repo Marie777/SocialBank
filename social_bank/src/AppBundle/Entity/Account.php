@@ -32,7 +32,7 @@ class Account {
     protected $status = AccountStatus::ENABLED;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="float")
      * @var float
      */
     protected $typeCommission = 0.01;

@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Customer;
+use AppBundle\Entity\Transaction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -57,9 +58,20 @@ class AccountController extends Controller {
      * @return array
      */
     function displayAction(Account $account) {
-
+        $income = $account->getIncome()->toArray();
+        $expense = $account->getExpense()->toArray();
+        $allTransactions = array_merge($income, $expense);
+        /** @var Transaction[] $allTransactions */
+        $allTransactions = usort($allTransactions, function(Transaction $a, Transaction $b){
+            if($a->getDueDate() >= $b->getDueDate()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
         return [
-            "account" => $account
+            "account" => $account,
+            "transactions" => $allTransactions
         ];
     }
 }

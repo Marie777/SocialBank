@@ -5,6 +5,40 @@
 {% endblock %}
 
 {% block content %}
-    <h1>This is display page of account number {{ account.id }}</h1>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-3 offset-md-1"><h5>Account number {{ account.id }}</h5></div>
+            <div class="col-md-3 offset-md-1"><h5>Balance {{ account.balance }}</h5></div>
+            <div class="col-md-3 offset-md-1"><h5>Comission type {{ account.typeCommission*100 }}%</h5></div>
+        </div>
+
+        <div class="row">
+            <table class="table">
+                <caption>Transactions</caption>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for transaction in transactions %}
+                        <th scope="row">{{ transaction.id }}</th>
+                        <td>{{ transaction.dueDate }}</td>
+                        <td>{{ transaction.amount }}</td>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <a href="" class="btn"></a>
+        </div>
+        
+    </div>
 {% endblock %}
 
