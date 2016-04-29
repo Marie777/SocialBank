@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Account;
 use AppBundle\Entity\Customer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,27 +13,53 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class AccountController extends Controller {
 
     /**
-     * @Route("/", name="getAccountList")
+     * @Route("/", name="get-account-list")
      * @Security("has_role('ROLE_USER')")
      * @Template
      */
-    function getAccountListAction() {
+    function getAllAction() {
         /** @var Customer $user */
         $user = $this->getUser();
         
-        $accounts = $user->getAcoounts();
+        $accounts = $user->getAccounts();
 
         return [
-            "account" => $accounts
+            "accounts" => $accounts
         ];
     }
 
     /**
-     * @Route("/register/customer", name="customer-registration")
-     * @Template
+     * @Route("/account/create", name="create-account")
+     * @Security("has_role('ROLE_USER')")
      */
-    public function registrationAction() {
-        return $this->get('pugx_multi_user.registration_manager')
-                    ->register('AppBundle\Entity\Customer');
+    function createAction() {
+        /** @var Customer $user */
+        $user = $this->getUser();
+
+        $om = $this->getDoctrine()->getManager();
+
+        $account = new Account();
+        
+        $account->setCustomer($user);
+
+        $om->persist($account);
+
+        $om->flush();
+
+        return $this->redirectToRoute('account-display', ["id" => $account->getId()]);
+    }
+
+    /**
+     * @Route("/account/{id}", name="account-display")
+     * @Security("has_role('ROLE_USER')")
+     * @Template
+     * @param Account $account
+     * @return array
+     */
+    function displayAction(Account $account) {
+
+        return [
+            "account" => $account
+        ];
     }
 }
