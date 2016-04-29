@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\DBAL\AccountStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,13 +29,13 @@ class Account {
      * @ORM\Column(type="enum_account_status")
      * @var string
      */
-    protected $status;
+    protected $status = AccountStatus::ENABLED;
 
     /**
      * @ORM\Column(type="decimal")
      * @var float
      */
-    protected $typeCommission;
+    protected $typeCommission = 0.01;
 
     /**
      * @var Customer
@@ -53,6 +54,15 @@ class Account {
      * @ORM\OneToMany(targetEntity="Transaction", mappedBy="destination")
      */
     protected $income;
+
+    /**
+     * Account constructor.
+     */
+    public function __construct()
+    {
+        $this->expense = new ArrayCollection();
+        $this->income = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -108,5 +118,37 @@ class Account {
     public function setTypeCommission($typeCommission)
     {
         $this->typeCommission = $typeCommission;
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getExpense()
+    {
+        return $this->expense;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getIncome()
+    {
+        return $this->income;
     }
 }
