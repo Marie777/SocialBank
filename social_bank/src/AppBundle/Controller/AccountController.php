@@ -60,15 +60,18 @@ class AccountController extends Controller {
     function displayAction(Account $account) {
         $income = $account->getIncome()->toArray();
         $expense = $account->getExpense()->toArray();
+
         $allTransactions = array_merge($income, $expense);
+
         /** @var Transaction[] $allTransactions */
-        $allTransactions = usort($allTransactions, function(Transaction $a, Transaction $b){
+        usort($allTransactions, function(Transaction $a, Transaction $b){
             if($a->getDueDate() >= $b->getDueDate()) {
                 return 1;
             } else {
                 return -1;
             }
         });
+
         return [
             "account" => $account,
             "transactions" => $allTransactions
