@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Mmarie
- * Date: 4/28/2016
- * Time: 7:56 AM
- */
 
 namespace AppBundle\Entity;
 
@@ -25,7 +19,7 @@ class Transaction
     protected $id;
     
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      * @var string
      */
     protected $type;
@@ -64,7 +58,15 @@ class Transaction
      * @ORM\Column(type="boolean")
      * @var bool
      */
-    protected $isApproved;
+    protected $isApproved = false;
+
+    /**
+     * Transaction constructor.
+     */
+    public function __construct()
+    {
+        $this->setRequestDate(new \DateTime('now'));
+    }
 
     /**
      * @return int
@@ -176,6 +178,14 @@ class Transaction
     public function setIsApproved($isApproved)
     {
         $this->isApproved = $isApproved;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
 
