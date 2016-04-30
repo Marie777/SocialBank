@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-3 offset-md-1"><h5>Account number {{ account.id }}</h5></div>
             <div class="col-md-3 offset-md-1"><h5>Balance {{ account.balance }}</h5></div>
-            <div class="col-md-3 offset-md-1"><h5>Comission type {{ account.typeCommission*100 }}%</h5></div>
+            <div class="col-md-3 offset-md-1"><h5>Commission type {{ account.typeCommission*100 }}%</h5></div>
         </div>
 
         <div class="row">
@@ -24,19 +24,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    {% for transaction in transactions %}
+
+                {% for transaction in transactions %}
+                    <tr>
                         <th scope="row">{{ transaction.id }}</th>
-                        <td>{{ transaction.dueDate }}</td>
+                        <td>{{ transaction.dueDate|date('m/d/Y') }}</td>
                         <td>{{ transaction.amount }}</td>
-                    {% endfor %}
-                </tr>
+                    </tr>
+                {% endfor %}
+
                 </tbody>
             </table>
         </div>
 
         <div class="row">
-            <a href="" class="btn"></a>
+            <a href="{{ path('transaction-create', {'id': account.id}) }}" class="btn">Add transaction</a>
         </div>
         
     </div>
