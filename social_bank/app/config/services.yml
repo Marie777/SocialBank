@@ -7,3 +7,8 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  app.form.type.transaction:
+      class: AppBundle\Form\Type\TransactionFormType
+      arguments: ["@doctrine.orm.entity_manager"]
+      tags:
+          - { name: form.type }
