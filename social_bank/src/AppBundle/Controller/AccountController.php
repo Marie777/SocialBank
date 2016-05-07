@@ -3,6 +3,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\DBAL\AccountStatus;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Customer;
 use AppBundle\Entity\Transaction;
@@ -18,11 +19,14 @@ class AccountController extends Controller {
      * @Security("has_role('ROLE_USER')")
      * @Template
      */
-    function getAllAction() {
+    public function getAllAction() {
         /** @var Customer $user */
         $user = $this->getUser();
         
-        $accounts = $user->getAccounts();
+        $accounts = $user->getAccounts()
+                         ->filter(function(Account $account){
+                             return $account->getStatus() === AccountStatus::ENABLED;
+                         });
 
         return [
             "accounts" => $accounts
@@ -33,7 +37,7 @@ class AccountController extends Controller {
      * @Route("/account/create", name="create-account")
      * @Security("has_role('ROLE_USER')")
      */
-    function createAction() {
+    public function createAction() {
         /** @var Customer $user */
         $user = $this->getUser();
 
@@ -57,7 +61,7 @@ class AccountController extends Controller {
      * @param Account $account
      * @return array
      */
-    function displayAction(Account $account) {
+    public function displayAction(Account $account) {
         $income = $account->getIncome()->toArray();
         $expense = $account->getExpense()->toArray();
 
@@ -76,5 +80,14 @@ class AccountController extends Controller {
             "account" => $account,
             "transactions" => $allTransactions
         ];
+    }
+
+    /**
+     * @Route("/account/{id}/disable", name="account-disable")
+     * @Security("has_role('ROLE_USER')")
+     * @param Account $account
+     */
+    public function disableAction(Account $account){
+        $account->setStatus(AccountStatus::DISABLED);
     }
 }
