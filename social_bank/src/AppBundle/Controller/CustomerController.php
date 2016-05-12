@@ -29,7 +29,7 @@ class CustomerController extends Controller {
     }
 
     /**
-     * @Route("/customer/{id}/update", name="Customer-update")
+     * @Route("/customer/{id}/update", name="customer-update")
      * @Template
      * @param Customer $customer
      * @param Request $request
