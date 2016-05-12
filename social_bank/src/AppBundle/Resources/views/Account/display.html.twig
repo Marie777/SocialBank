@@ -40,7 +40,11 @@
         <div class="row">
             <a href="{{ path('transaction-create', {'id': account.id}) }}" class="btn">Add transaction</a>
         </div>
-        
+
+        <a class="btn btn-default"
+           href="{{ path('account-disable', {'id': account.id}) }}"
+           role="button">Request to disable this account</a>
+
     </div>
 {% endblock %}
 
