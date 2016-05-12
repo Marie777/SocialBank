@@ -23,10 +23,10 @@ class AccountController extends Controller {
         /** @var Customer $user */
         $user = $this->getUser();
         
-        $accounts = $user->getAccounts()
-                         ->filter(function(Account $account){
-                             return $account->getStatus() === AccountStatus::ENABLED;
-                         });
+        $accounts = $user->getAccounts();
+//                         ->filter(function(Account $account){
+//                             return $account->getStatus() === AccountStatus::ENABLED;
+//                         });
 
         return [
             "accounts" => $accounts
@@ -86,8 +86,12 @@ class AccountController extends Controller {
      * @Route("/account/{id}/disable", name="account-disable")
      * @Security("has_role('ROLE_USER')")
      * @param Account $account
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function disableAction(Account $account){
-        $account->setStatus(AccountStatus::DISABLED);
+        $om = $this->getDoctrine()->getManager();
+        $account->setStatus(AccountStatus::PENDING_DISABLE);
+        $om->flush();
+        return $this->redirectToRoute('get-account-list');
     }
 }
