@@ -10,6 +10,7 @@ class AccountStatus extends Type {
     const ENABLED = "enabled";
     const DISABLED = "disabled";
     const PENDING = "pending";
+    const PENDING_DISABLE = "pending_disable";
 
     /**
      * Gets the SQL declaration snippet for a field of this type.
@@ -21,7 +22,7 @@ class AccountStatus extends Type {
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "ENUM('enabled', 'disabled', 'pending') COMMENT '(DC2Type:enum_account_status)'";
+        return "ENUM('enabled', 'disabled', 'pending', 'pending_disable') COMMENT '(DC2Type:enum_account_status)'";
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
@@ -31,7 +32,7 @@ class AccountStatus extends Type {
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if (!in_array($value, array(static::ENABLED, static::DISABLED, static::PENDING))) {
+        if (!in_array($value, array(static::ENABLED, static::DISABLED, static::PENDING, static::PENDING_DISABLE))) {
             throw new \InvalidArgumentException("Invalid status");
         }
         return $value;
