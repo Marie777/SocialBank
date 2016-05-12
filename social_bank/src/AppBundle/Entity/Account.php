@@ -29,7 +29,7 @@ class Account {
      * @ORM\Column(type="enum_account_status")
      * @var string
      */
-    protected $status = AccountStatus::ENABLED;
+    protected $status = AccountStatus::PENDING;
 
     /**
      * @ORM\Column(type="float")
