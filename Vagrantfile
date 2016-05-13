@@ -67,11 +67,20 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update
     sudo apt-get install -y apache2
-    sudo apt-get install mysql-server
-    sudo apt-get install php5 libapache2-mod-php5 php5-cli
+
+    echo "mysql-server mysql-server/root_password password root" | debconf-set-selections
+    echo "mysql-server mysql-server/root_password_again password root" | debconf-set-selections
+    sudo apt-get install mysql-server -y
+    sudo apt-get install php5 libapache2-mod-php5 php5-cli php5-mysql -y
+
+    a2enmod rewrite > /dev/null 2>&1
+    sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+    cp /var/www/html/site.conf /etc/apache2/sites-enabled/000-default.conf
+
     sudo /etc/init.d/apache2 restart
 
-    sudo curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony
-    sudo chmod a+x /usr/local/bin/symfony
+    mysql -uroot -proot -e "CREATE DATABASE symfony"
+
+    (cd /var/www/html/social_bank && php composer.phar install && php bin/console doc:schema:create)
   SHELL
 end
