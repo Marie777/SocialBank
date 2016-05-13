@@ -45,8 +45,9 @@
                     <ul class="dropdown-menu">
 
                         <li><a href="{{ path('get-account-pending-approval-list') }}">New account requests</a></li>
+                        {% if is_granted("ROLE_USER") %}
                         <li class="active"><a href="{{ path('customer-update', {'id': app.user.id}) }}">Disable account requests<span class="sr-only">(current)</span></a></li>
-
+                        {% endif %}
 
                     </ul>
                 </li>
