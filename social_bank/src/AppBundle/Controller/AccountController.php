@@ -40,18 +40,17 @@ class AccountController extends Controller {
     public function createAction() {
         /** @var Customer $user */
         $user = $this->getUser();
-
         $om = $this->getDoctrine()->getManager();
 
         $account = new Account();
-        
         $account->setCustomer($user);
 
         $om->persist($account);
-
         $om->flush();
 
-        return $this->redirectToRoute('account-display', ["id" => $account->getId()]);
+        
+
+        return $this->redirectToRoute('get-account-list'); //, ["id" => $account->getId()]);
     }
 
     /**
@@ -93,5 +92,37 @@ class AccountController extends Controller {
         $account->setStatus(AccountStatus::PENDING_DISABLE);
         $om->flush();
         return $this->redirectToRoute('get-account-list');
+    }
+
+    /**
+     * @Route("/clerk/approvalList", name="get-account-pending-approval-list")
+     * @Security("has_role('ROLE_USER')")
+     * @Template
+     */
+    public function getPendingApprovalAction() {
+        /** @var Customer $user */
+        $user = $this->getUser();
+
+        $accounts = $user->getAccounts()
+                         ->filter(function(Account $account){
+                             return $account->getStatus() === AccountStatus::PENDING;
+                         });
+
+        return [
+            "accounts" => $accounts
+        ];
+    }
+
+    /**
+     * @Route("/account/{id}/enable", name="account-enable")
+     * @Security("has_role('ROLE_USER')")
+     * @param Account $account
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function enableAction(Account $account){
+        $om = $this->getDoctrine()->getManager();
+        $account->setStatus(AccountStatus::ENABLED);
+        $om->flush();
+        return $this->redirectToRoute('get-account-pending-approval-list');
     }
 }
