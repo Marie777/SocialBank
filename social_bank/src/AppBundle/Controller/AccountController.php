@@ -54,6 +54,19 @@ class AccountController extends Controller {
     }
 
     /**
+     * @Route("/account/{id}/request/disable", name="account-request-disable")
+     * @Security("has_role('ROLE_USER')")
+     * @param Account $account
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function requestDisableAction(Account $account){
+        $om = $this->getDoctrine()->getManager();
+        $account->setStatus(AccountStatus::PENDING_DISABLE);
+        $om->flush();
+        return $this->redirectToRoute('get-account-list');
+    }
+
+    /**
      * @Route("/account/{id}", name="account-display")
      * @Security("has_role('ROLE_USER')")
      * @Template
@@ -91,21 +104,9 @@ class AccountController extends Controller {
         $om = $this->getDoctrine()->getManager();
         $account->setStatus(AccountStatus::ENABLED);
         $om->flush();
-        return $this->redirectToRoute('get-account-pending-approval-list');
+        return $this->redirectToRoute('get-account-pending-list');
     }
 
-    /**
-     * @Route("/account/{id}/request/disable", name="account-request-disable")
-     * @Security("has_role('ROLE_USER')")
-     * @param Account $account
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function requestDisableAction(Account $account){
-        $om = $this->getDoctrine()->getManager();
-        $account->setStatus(AccountStatus::PENDING_DISABLE);
-        $om->flush();
-        return $this->redirectToRoute('get-account-list');
-    }
 
     /**
      * @Route("/account/{id}/disable", name="account-disable")
@@ -117,8 +118,30 @@ class AccountController extends Controller {
         $om = $this->getDoctrine()->getManager();
         $account->setStatus(AccountStatus::DISABLED);
         $om->flush();
-        return $this->redirectToRoute('get-account-pending-approval-list');
+        return $this->redirectToRoute('get-account-pending-list');
     }
+
+
+    /**
+     * @Route("/clerk/disableList", name="get-account-pending-list")
+     * @Security("has_role('ROLE_USER')")
+     * @Template
+     */
+    public function getPendingAction() {
+
+        $om = $this->getDoctrine()->getManager();
+        $accountsPendingE = $om->getRepository(Account::class)->findBy(['status' => AccountStatus::PENDING]);
+        $accountsPendingD = $om->getRepository(Account::class)->findBy(['status' => AccountStatus::PENDING_DISABLE]);
+        $allAccounts = array_merge($accountsPendingD, $accountsPendingE);
+
+        return [
+            "accounts" => $allAccounts
+        ];
+    }
+
+
+    
+    //-------------------------------//
 
     /**
      * @Route("/clerk/approvalList", name="get-account-pending-approval-list")
@@ -128,30 +151,14 @@ class AccountController extends Controller {
     public function getPendingApprovalAction() {
 
         $om = $this->getDoctrine()->getManager();
-        
+
         $accounts = $om->getRepository(Account::class)->findBy(['status' => AccountStatus::PENDING]);
-                       //  ->filter(function(Account $account){
-                        //     return $account->getStatus() === AccountStatus::PENDING;
-                        // });
+        //  ->filter(function(Account $account){
+        //     return $account->getStatus() === AccountStatus::PENDING;
+        // });
 
         return [
             "accounts" => $accounts
         ];
     }
-
-    /**
-     * @Route("/clerk/disableList", name="get-account-pending-disable-list")
-     * @Security("has_role('ROLE_USER')")
-     * @Template
-     */
-    public function getPendingDisableAction() {
-
-        $om = $this->getDoctrine()->getManager();
-        $accounts = $om->getRepository(Account::class)->findBy(['status' => AccountStatus::PENDING_DISABLE]);
-        
-        return [
-            "accounts" => $accounts
-        ];
-    }
-
 }
