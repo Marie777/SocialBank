@@ -6,7 +6,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-12"><h1>New account requests</h1></div>
+            <div class="col-md-12"><h1>Accounts requests</h1></div>
         </div>
 
 
@@ -16,8 +16,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Status</th>
-                    <th>approve</th>
-                    <th>deny</th>
+                    <th>Enable</th>
+                    <th>Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -25,18 +25,18 @@
                 {% for account in accounts %}
                     <tr>
                         <th scope="row">
-                            <a href="{{ path('get-account-pending-approval-list', {'id': account.id}) }}">{{ account.id }}</a>
+                            <a href="{{ path('get-account-pending-list', {'id': account.id}) }}">{{ account.id }}</a>
                         </th>
                         <td>{{ account.status }}</td>
                         <th>
                             <a class="btn btn-default"
                                href="{{ path('account-enable', {'id': account.id}) }}"
-                               role="button">approve</a>
+                               role="button">Enable</a>
                         </th>
                         <th>
                             <a class="btn btn-default"
                                href="{{ path('account-disable', {'id': account.id}) }}"
-                               role="button">deny</a>
+                               role="button">Disable</a>
                         </th>
                     </tr>
                 {% endfor %}
