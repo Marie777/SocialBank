@@ -6,7 +6,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-12"><h1>List of accounts</h1></div>
+            <div class="col-md-12"><h1>New account requests</h1></div>
         </div>
 
 
@@ -35,7 +35,7 @@
                         </th>
                         <th>
                             <a class="btn btn-default"
-                               href="{{ path('account-enable', {'id': account.id}) }}"
+                               href="{{ path('account-disable', {'id': account.id}) }}"
                                role="button">deny</a>
                         </th>
                     </tr>
