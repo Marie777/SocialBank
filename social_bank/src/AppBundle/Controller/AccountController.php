@@ -82,38 +82,6 @@ class AccountController extends Controller {
     }
 
     /**
-     * @Route("/account/{id}/disable", name="account-disable")
-     * @Security("has_role('ROLE_USER')")
-     * @param Account $account
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function disableAction(Account $account){
-        $om = $this->getDoctrine()->getManager();
-        $account->setStatus(AccountStatus::PENDING_DISABLE);
-        $om->flush();
-        return $this->redirectToRoute('get-account-list');
-    }
-
-    /**
-     * @Route("/clerk/approvalList", name="get-account-pending-approval-list")
-     * @Security("has_role('ROLE_USER')")
-     * @Template
-     */
-    public function getPendingApprovalAction() {
-        /** @var Customer $user */
-        $user = $this->getUser();
-
-        $accounts = $user->getAccounts()
-                         ->filter(function(Account $account){
-                             return $account->getStatus() === AccountStatus::PENDING;
-                         });
-
-        return [
-            "accounts" => $accounts
-        ];
-    }
-
-    /**
      * @Route("/account/{id}/enable", name="account-enable")
      * @Security("has_role('ROLE_USER')")
      * @param Account $account
@@ -125,4 +93,65 @@ class AccountController extends Controller {
         $om->flush();
         return $this->redirectToRoute('get-account-pending-approval-list');
     }
+
+    /**
+     * @Route("/account/{id}/request/disable", name="account-request-disable")
+     * @Security("has_role('ROLE_USER')")
+     * @param Account $account
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function requestDisableAction(Account $account){
+        $om = $this->getDoctrine()->getManager();
+        $account->setStatus(AccountStatus::PENDING_DISABLE);
+        $om->flush();
+        return $this->redirectToRoute('get-account-list');
+    }
+
+    /**
+     * @Route("/account/{id}/disable", name="account-disable")
+     * @Security("has_role('ROLE_USER')")
+     * @param Account $account
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function disableAction(Account $account){
+        $om = $this->getDoctrine()->getManager();
+        $account->setStatus(AccountStatus::DISABLED);
+        $om->flush();
+        return $this->redirectToRoute('get-account-pending-approval-list');
+    }
+
+    /**
+     * @Route("/clerk/approvalList", name="get-account-pending-approval-list")
+     * @Security("has_role('ROLE_USER')")
+     * @Template
+     */
+    public function getPendingApprovalAction() {
+
+        $om = $this->getDoctrine()->getManager();
+        
+        $accounts = $om->getRepository(Account::class)->findBy(['status' => AccountStatus::PENDING]);
+                       //  ->filter(function(Account $account){
+                        //     return $account->getStatus() === AccountStatus::PENDING;
+                        // });
+
+        return [
+            "accounts" => $accounts
+        ];
+    }
+
+    /**
+     * @Route("/clerk/disableList", name="get-account-pending-disable-list")
+     * @Security("has_role('ROLE_USER')")
+     * @Template
+     */
+    public function getPendingDisableAction() {
+
+        $om = $this->getDoctrine()->getManager();
+        $accounts = $om->getRepository(Account::class)->findBy(['status' => AccountStatus::PENDING_DISABLE]);
+        
+        return [
+            "accounts" => $accounts
+        ];
+    }
+
 }
