@@ -1,0 +1,51 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %} Accounts pending disable list {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><h1>Disable account requests</h1></div>
+        </div>
+
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>approve</th>
+                    <th>deny</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for account in accounts %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('get-account-pending-disable-list', {'id': account.id}) }}">{{ account.id }}</a>
+                        </th>
+                        <td>{{ account.status }}</td>
+                        <th>
+                            <a class="btn btn-default"
+                               href="{{ path('account-disable', {'id': account.id}) }}"
+                               role="button">approve</a>
+                        </th>
+                        <th>
+                            <a class="btn btn-default"
+                               href="{{ path('account-enable', {'id': account.id}) }}"
+                               role="button">deny</a>
+                        </th>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+
