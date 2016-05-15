@@ -47,9 +47,7 @@ class AccountController extends Controller {
 
         $om->persist($account);
         $om->flush();
-
         
-
         return $this->redirectToRoute('get-account-list'); //, ["id" => $account->getId()]);
     }
 
