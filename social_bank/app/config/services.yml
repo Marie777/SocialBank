@@ -12,3 +12,8 @@ services:
       arguments: ["@doctrine.orm.entity_manager"]
       tags:
           - { name: form.type }
+  app.form.type.report:
+      class: AppBundle\Form\Type\CreateReportFormType
+      arguments: ["@doctrine.orm.entity_manager"]
+      tags:
+          - { name: form.type }
