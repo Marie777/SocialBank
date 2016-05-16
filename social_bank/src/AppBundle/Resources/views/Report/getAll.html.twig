@@ -1,0 +1,41 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}List of reports{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="row">
+            <table class="table">
+                <caption>Reports</caption>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Start date</th>
+                    <th>End Date</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for report in reports %}
+                    <tr>
+                        <th scope="row"> <a href="{{ path('display-report', {'id': report.id}) }}">{{ report.id }}</a></th>
+                        <td>{{ report.startDate|date('m/d/Y') }}</td>
+                        <td>{{ report.endDate|date('m/d/Y') }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <a href="{{ path('create-report') }}" class="btn">Add report</a>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+
