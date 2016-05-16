@@ -11,11 +11,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Report;
 use AppBundle\Entity\Transaction;
+use AppBundle\Form\Type\CreateReportFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 class ReportController extends Controller
 {
@@ -27,7 +28,7 @@ class ReportController extends Controller
      */
     public function getAllAction() {
 
-        $reports = $this->getDoctrine()->getManager()->getRepository(Report::class);
+        $reports = $this->getDoctrine()->getManager()->getRepository(Report::class)->findAll();
 
         return [
             "reports" => $reports
@@ -37,6 +38,7 @@ class ReportController extends Controller
     /**
      * @Route("/report/create", name="create-report")
      * @param Request $request
+     * @Template
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createAction(Request $request){
@@ -44,9 +46,9 @@ class ReportController extends Controller
         $om = $this->getDoctrine()->getManager();
 
         $report = new Report();
+        $report->setEndDate(new \DateTime('now'));
 
         $form = $this->createForm(CreateReportFormType::class, $report);
-        $form->handleRequest($request);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -72,7 +74,9 @@ class ReportController extends Controller
         
         
         $countTransactions = count($allTransactions);
-        $maxAmountTransaction = max($allTransactions->getAmount);
+        $maxAmountTransaction = max(array_map(function(Transaction $transaction){
+            return $transaction->getAmount();
+        }, $allTransactions));
 
 
         return [
