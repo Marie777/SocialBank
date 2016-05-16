@@ -4,6 +4,9 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ */
 class Report
 {
 
@@ -20,13 +23,12 @@ class Report
      * @var \DateTime
      */
     protected $startDate;
-
+    
     /**
      * @ORM\Column(type="datetime")
      * @var \DateTime
      */
     protected $endDate;
-
 
     /**
      * @return int
