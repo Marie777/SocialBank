@@ -21,19 +21,25 @@ class TransactionController extends Controller
      */
     public function createAction(Request $request, Account $account)
     {
+        $error = null;
         $om = $this->getDoctrine()->getManager();
         $transaction = new Transaction();
+        $transaction->setDueDate(new \DateTime('now'));
         $transaction->setSource($account);
         $form = $this->createForm(TransactionFormType::class, $transaction);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $om->persist($transaction);
-            $om->flush();
-            return $this->redirectToRoute('account-display', ['id' => $account->getId()]);
+            if($transaction->getSource()->getBalance() >= $transaction->getAmount()){
+                $om->persist($transaction);
+                $om->flush();
+                return $this->redirectToRoute('account-display', ['id' => $account->getId()]);
+            }
+            $error = "Not enough money in the account!";
         }
         return [
             'form' => $form->createView(),
+            'error' => $error
         ];
 
     }
