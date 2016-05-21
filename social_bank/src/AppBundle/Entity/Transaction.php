@@ -133,7 +133,7 @@ class Transaction
     }
 
     /**
-     * @return string
+     * @return Account
      */
     public function getSource()
     {
@@ -141,7 +141,7 @@ class Transaction
     }
 
     /**
-     * @param string $source
+     * @param Account $source
      */
     public function setSource($source)
     {
@@ -149,7 +149,7 @@ class Transaction
     }
 
     /**
-     * @return string
+     * @return Account
      */
     public function getDestination()
     {
@@ -157,7 +157,7 @@ class Transaction
     }
 
     /**
-     * @param string $destination
+     * @param Account $destination
      */
     public function setDestination($destination)
     {
