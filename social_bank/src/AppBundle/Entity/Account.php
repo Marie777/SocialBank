@@ -77,15 +77,14 @@ class Account {
      */
     public function getBalance()
     {
-        return $this->balance;
-    }
+        $sumFunc = function($c, Transaction $t) {
+            return $c + $t->getAmount();
+        };
 
-    /**
-     * @param int $balance
-     */
-    public function setBalance($balance)
-    {
-        $this->balance = $balance;
+        $expense = array_reduce($this->getExpense()->toArray(), $sumFunc, 0);
+        $income = array_reduce($this->getIncome()->toArray(), $sumFunc, 0);
+
+        return $income - $expense;
     }
 
     /**
