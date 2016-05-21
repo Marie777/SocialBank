@@ -29,7 +29,7 @@
                     <tr>
                         <th scope="row">{{ transaction.id }}</th>
                         <td>{{ transaction.dueDate|date('m/d/Y') }}</td>
-                        <td>{{ transaction.amount }}</td>
+                        <td>{% if account.id == transaction.source.id %}-{% endif %}{{ transaction.amount }}</td>
                     </tr>
                 {% endfor %}
 
