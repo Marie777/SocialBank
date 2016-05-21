@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Mmarie
- * Date: 5/15/2016
- * Time: 9:06 AM
- */
 
 namespace AppBundle\Controller;
 
@@ -56,7 +50,6 @@ class ReportController extends Controller
             $om->flush();
             return $this->redirectToRoute('get-report-list');
         }
-        /** @var TYPE_NAME $form */
         return ['form' => $form->createView()];
 
     }
@@ -69,15 +62,15 @@ class ReportController extends Controller
      */
     public function displayAction(Report $report){
         $om = $this->getDoctrine()->getManager();
+
         $allTransactions = $om->getRepository(Transaction::class)
                               ->findRangeDate($report->getStartDate(),$report->getEndDate());
-        
-        
         $countTransactions = count($allTransactions);
         $maxAmountTransaction = max(array_map(function(Transaction $transaction){
             return $transaction->getAmount();
         }, $allTransactions));
 
+        
 
         return [
            "countTransactions"=> $countTransactions,
